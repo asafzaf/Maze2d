@@ -10,12 +10,14 @@ private:
 	int col;
 	int row;
 	c_status status;
+	bool visited;
 
 public:
 	Cell(int Col, int Row) {
 		this->col = Col;
 		this->row = Row;
 		this->status = wall;
+		this->visited = false;
 	}
 	c_status getStatus() {
 		return status;
