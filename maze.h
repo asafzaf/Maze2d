@@ -152,7 +152,7 @@ public:
         goalPosition = &grid[p.first][p.second];
     }
 
-    Maze(const string & compressedData) {
+    Maze(string & compressedData) {
         vector<string> parts = splitString(compressedData, '@');
 
         rowSize = stringToInt(parts[0]);
@@ -168,7 +168,7 @@ public:
                 Cell cell(i, j, cellData[j]);
                 grid[i][j] = cell;
             }
-        }
+        }   
 
         //vector<pair<int,int>> stackPairs = splitPairs(parts[3], ';');
 
