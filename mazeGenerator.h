@@ -7,9 +7,9 @@
 
 
 class MazeGenerator {
-
+public:
 	virtual Maze* generate(int row_size, int col_size) = 0;
-	string measureAlgorithmTime(int row_size, int col_size) { // input algo
+	void measureAlgorithmTime(int row_size, int col_size) { // input algo
 		
 		auto start = chrono::high_resolution_clock::now(); // start time
 
@@ -19,7 +19,7 @@ class MazeGenerator {
 
 		auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
 		
-		cout << duration.count() << endl;
+		cout << "Measured Time: " << duration.count() << " microseconds." << endl;
 
 		free(temp);
 	}

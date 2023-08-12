@@ -164,7 +164,7 @@ public:
         // Parse rows and reconstruct grid
         for (size_t i = 0; i < rows.size(); ++i) {
             vector<string> cellData = splitString(rows[i], ',');
-            for (size_t j = 0; j < cellData.size(); ++j) {
+            for (int j = 0; j < cellData.size(); ++j) {
                 Cell cell(i, j, cellData[j]);
                 grid[i][j] = cell;
             }

@@ -1,12 +1,38 @@
 #include "maze.h"
 #include "mazeCompression.h"
+#include "SimpleMazeGenerator.h"
+#include "CLI.h"
+#include "BFS.h"
 
 int main() {
 
-	MazeCompression compress;
 
-	Maze maze(10,10);
-	maze.printMaze();
+	Graph g(6); // Create a graph with 6 vertices
+
+	g.addEdge(0, 1);
+	g.addEdge(0, 2);
+	g.addEdge(1, 3);
+	g.addEdge(2, 4);
+	g.addEdge(3, 4);
+	g.addEdge(3, 5);
+	g.addEdge(4, 5);
+
+	cout << "Breadth-First Traversal starting from vertex 0: ";
+	BFS bfs;
+
+	bfs.bfs(g, 2);
+
+	//CLI cli(cin,cout);
+	//cli.start();
+
+	//SimpleMazeGenerator simp(1);
+
+	//simp.measureAlgorithmTime(100, 100);
+
+	//MazeCompression compress;
+
+	//Maze maze(10,10);
+	//maze.printMaze();
 	//Position start = maze.getStartPosition();
 
 	//vector<string> moves = maze.getPossibleMoves(start);
@@ -25,13 +51,13 @@ int main() {
 
 	//cout << "1";
 
-	compress.compress(maze);
+	//compress.compress(maze);
 
-	const string path = "output.txt";
+	//const string path = "output.txt";
 
-	Maze* m = compress.decompress(path);
+	//Maze* m = compress.decompress(path);
 
-	m->printMaze();
+	//m->printMaze();
 
 	cout << "1";
 
