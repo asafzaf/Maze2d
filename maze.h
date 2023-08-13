@@ -129,6 +129,7 @@ public:
 
 class Maze {
 private:
+    string name;
     vector<vector<Cell>> grid;
     stack<pair<int, int>> backtrackStack;
     Cell* startPosition;
@@ -137,8 +138,9 @@ private:
     int colSize;
 
 public:
-    Maze(int rows, int cols) : rowSize(rows), colSize(cols) {
+    Maze(string mazename, int rows, int cols) : rowSize(rows), colSize(cols) {
         grid = vector<vector<Cell>>(rows, vector<Cell>(cols, Cell(rows, cols)));
+        name = mazename;
         srand(time(0)); // Seed the random number generator
         generateMaze(0, 0); // Generate maze starting from (0, 0)
         for (int i = 0; i < rows; i++) {
@@ -152,7 +154,7 @@ public:
         goalPosition = &grid[p.first][p.second];
     }
 
-    Maze(string & compressedData) {
+    Maze(string & compressedData, string maze_name) {
         vector<string> parts = splitString(compressedData, '@');
 
         rowSize = stringToInt(parts[0]);
@@ -185,7 +187,7 @@ public:
 
         startPosition = &grid[posStart.getRow()][posStart.getCol()];
         goalPosition = &grid[posGoal.getRow()][posGoal.getCol()];  
-    
+        name = maze_name;
     }
 
 
@@ -334,6 +336,7 @@ public:
         compressedData += compressPosition(startPosition);
         compressedData += "@";
         compressedData += compressPosition(goalPosition);
+
 
 
         // Append them to compressedData

@@ -17,8 +17,8 @@ private:
 
 public:
     CLI(istream& in, ostream& out) : input(in), output(out) {
-        register_command("hello", make_unique<HelloCommand>());
-        register_command("greet", make_unique<GreetCommand>());
+        register_command("hello", make_unique<DirCommand>());
+        register_command("greet", make_unique<GenerateMazeCommand>());
         register_command("exit", make_unique<ExitCommand>());
     }
 

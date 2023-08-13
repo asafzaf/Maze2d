@@ -29,10 +29,12 @@ int main() {
 
 	//simp.measureAlgorithmTime(100, 100);
 
-	//MazeCompression compress;
+	MazeCompression compress;
 
-	//Maze maze(10,10);
-	//maze.printMaze();
+	string s = "asaf";
+
+	Maze maze(s, 10, 10);
+	maze.printMaze();
 	//Position start = maze.getStartPosition();
 
 	//vector<string> moves = maze.getPossibleMoves(start);
@@ -51,13 +53,13 @@ int main() {
 
 	//cout << "1";
 
-	//compress.compress(maze);
+	compress.compress(maze);
 
-	//const string path = "output.txt";
+	const string path = "output.txt";
 
-	//Maze* m = compress.decompress(path);
+	Maze* m = compress.decompress(path);
 
-	//m->printMaze();
+	m->printMaze();
 
 	cout << "1";
 

@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class BFS {
+class BFS : public Algorithm {
 
 public:
     
