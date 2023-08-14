@@ -3,6 +3,7 @@
 
 #include "Observer.h"
 #include "maze.h"
+#
 
 
 class Model : public Subject {
@@ -23,5 +24,31 @@ public:
     void printMaze(string name) {
         cout << "Printing Maze: " << name << endl;
         mazes[name]->printMaze();
+    }
+
+    void printMazeSize(string name) {
+        cout << "Maze '" << name << "' size in memory is - " << sizeof(mazes[name]) << " bytes." << endl;
+    }
+
+    void printMazesNames() {
+        cout << "Printing Maze:" << endl;
+        cout << "----------------" << endl;
+        cout << "Avaliable mazes:" << endl;
+        for (auto const& pair : mazes) {
+            cout << "- " << pair.first << endl;
+        }
+    }
+
+    bool checkMaze(string name) {
+        map<string, Maze*>::iterator it;
+        it = mazes.find(name);
+        if (it != mazes.end()) {
+            return true;
+        }
+        else return false;
+    }
+
+    Maze* getMaze(string name) {
+        return mazes[name];
     }
 };

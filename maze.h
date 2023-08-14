@@ -12,8 +12,8 @@
 
 using namespace std;
 
-const int rows = 10;
-const int cols = 10;
+//const int rows = 10;
+//const int cols = 10;
 
 enum Direction {
     UP,
@@ -202,13 +202,13 @@ public:
             if (dir == UP && row > 0) {
                 newRow--;
             }
-            else if (dir == DOWN && row < rows - 1) {
+            else if (dir == DOWN && row < rowSize - 1) {
                 newRow++;
             }
             else if (dir == LEFT && col > 0) {
                 newCol--;
             }
-            else if (dir == RIGHT && col < cols - 1) {
+            else if (dir == RIGHT && col < colSize - 1) {
                 newCol++;
             }
 
@@ -237,28 +237,12 @@ public:
 
         }
     }
-    /*void printMaze(int max_rows, int max_cols) {
-        for (int i = 0; i < max_rows; i++) {
-            for (int j = 0; j < max_cols; j++) {
-                cout << "A";
-                if (i == 0) cout << "#";
-                else if (i == max_rows) cout << "#";
-                else if (j == 0) cout << "#";
-                else if (j == max_cols) cout << "#";
-                else if (grid[i][j].getWall(UP)) cout << "#";
-                else cout << "C";
-                cout << "B";
-                if (grid[i][j].getWall(LEFT)) cout << "#";
-                else cout << "D";
-            }
-            cout << endl;
-        }
-    }*/
 
     void printMaze() {
         // Print the maze
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
+        cout << "Size: " << rowSize << "X" << colSize << endl;
+        for (int i = 0; i < rowSize; i++) {
+            for (int j = 0; j < colSize; j++) {
                 cout << " ";
                 if (grid[i][j].getWall(UP)) cout << "_";
                 else cout << "";
@@ -431,33 +415,6 @@ public:
         return tokens;
     }
 
-    //vector<pair<int, int>> splitPairs(const string& str, char delimiter) {
-    //    vector<pair<int,int>> tokens;
-    //    pair<int,int> token;
-    //    string temp;
-    //    string temp1;
-    //    string temp2;
-    //    size_t start = 0, end = 0;
-
-    //    while ((end = str.find(delimiter, start)) != string::npos) {
-    //        temp = str.substr(start, end - start);
-    //        temp1 = temp.substr(0, 1);
-    //        temp2 = temp.substr(1, 2);
-    //        int first = stoi(temp1);
-    //        int second = stoi(temp2);
-    //        token = { first, second };
-    //        tokens.push_back(token);
-    //        start = end + 1;
-    //    }
-
-    //    /*if (start < str.length()) {
-    //        token = str.substr(start);
-    //        tokens.push_back(token);
-    //    }*/
-
-    //    return tokens;
-    //}
-
     int stringToInt(const string& str) {
         int result = 0;
         for (char c : str) {
@@ -465,4 +422,5 @@ public:
         }
         return result;
     }
+
 };

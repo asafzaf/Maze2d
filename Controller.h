@@ -4,6 +4,7 @@
 #include "Observer.h"
 #include "maze.h"
 #include "Command.h"
+#include "mazeCompression.h"
 
 
 using namespace std;
@@ -11,6 +12,7 @@ using namespace std;
 class Controller : public Observer {
 private:
     Model* mymodel;
+    MazeCompression* compress;
     //friend class CLI;
     friend class Command;
 
@@ -20,13 +22,29 @@ private:
 public:
     Controller(Model* model) : Observer() {
         mymodel = model;
+        compress = new MazeCompression();
         DirCommand* dir = new DirCommand();
         GenerateMazeCommand* generatemaze = new GenerateMazeCommand(model);
-        DisplayCommand* display = new DisplayCommand();
+        DisplayCommand* display = new DisplayCommand(model);
+        SaveMazeCommand* savemaze = new SaveMazeCommand(model, compress);
+        LoadMazeCommand* loadmaze = new LoadMazeCommand(model, compress);
+        MazeSizeCommand* mazesize = new MazeSizeCommand(model);
+        FileSizeCommand* filesize = new FileSizeCommand();
+
+
+        ExitCommand* exit = new ExitCommand();
 
         commands["dir"] = (dir);
         commands["generate maze"] = (generatemaze);
         commands["display"] = (display);
+        commands["save maze"] = (savemaze);
+        commands["load maze"] = (loadmaze);
+        commands["maze size"] = (mazesize);
+        commands["file size"] = (filesize);
+
+
+        commands["exit"] = (exit);
+
         //register_command("dir", make_unique<DirCommand>());
         //register_command("generate maze", make_unique<GenerateMazeCommand>());
         //register_command("display", make_unique<DisplayCommand>());

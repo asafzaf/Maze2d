@@ -6,9 +6,9 @@
 
 class MazeCompression {
 public:
-	int compress(Maze& maze, string filename) {
+	int compress(Maze* maze, string filename) {
 
-		string str = maze.getData();
+		string str = maze->getData();
 
 		filename += ".txt";
 		

@@ -77,55 +77,100 @@ public:
 };
 
 class DisplayCommand : public Command {
+private:
+    Model* myModel;
 public:
+    DisplayCommand(Model* model) : myModel(model) {}
     void execute() override {
-        
+        myModel->printMazesNames();
+        string maze_name;
+        cout << "Please enter maze name: ";
+        cin >> maze_name;
+        cout << endl << "-----------------------" << endl;
+        myModel->printMaze(maze_name);
+        cout << endl << "-----------------------" << endl;
+        cout << "Maze has printed successfully!" << endl;
     }
 };
 
 class SaveMazeCommand : public Command {
+private:
+    Model* myModel;
+    MazeCompression* compress;
 public:
+    SaveMazeCommand(Model* model, MazeCompression* compressor) : myModel(model), compress(compressor) {}
     void execute() override {
         string filename, mazename;
         cout << "Enter maze name to save: ";
         cin >> mazename;
         cout << "Enter file name: ";
         cin >> filename;
-        //looking for the maze
-
+        Maze* tempMaze = myModel->getMaze(mazename);
         //compress maze and save it with the name
+        compress->compress(tempMaze, filename);
+        cout << endl << "-----------------------" << endl;
+        cout << "Maze saved successfully!" << endl;
     }
 };
 
 class LoadMazeCommand : public Command {
+private:
+    Model* myModel;
+    MazeCompression* compress;
 public:
+    LoadMazeCommand(Model* model, MazeCompression* compressor) : myModel(model), compress(compressor) {}
     void execute() override {
+        string directoryPath = "/";
         string filename, mazename;
+        cout << "List of files: " << endl;
+        for (const auto& entry : fs::directory_iterator(directoryPath)) {
+            if (entry.is_regular_file() && entry.path().extension() == ".txt") {
+                std::cout << "File: " << entry.path() << endl;
+            }
+        }
         cout << "Enter file name (*.txt): ";
         cin >> filename;
+        filename += ".txt";
+;        cout << "Enter new maze name: ";
+        cin >> mazename;
+        for (const auto& entry : fs::directory_iterator(directoryPath)) {
+            if (entry.is_regular_file() && entry.path().extension() == ".txt") {
+                std::cout << "File: " << entry.path() << endl;
+            }
+        }
         cout << "Enter new maze name: ";
         cin >> mazename;
-        //looking for the file
-
         //decompress maze and load it with the name
+        Maze* tempmaze = compress->decompress(filename);
+        myModel->addMaze(mazename, tempmaze);
     }
 };
 
 class MazeSizeCommand : public Command {
+private:
+    Model* myModel;
 public:
+    MazeSizeCommand(Model* model) : myModel(model) {}
     void execute() override {
-        //looking for the maze
-
-        //printing the size
+        myModel->printMazesNames();
+        string maze_name;
+        cout << "Please enter maze name: ";
+        cin >> maze_name;
+        cout << endl << "-----------------------" << endl;
+        myModel->printMazeSize(maze_name);
     }
 };
 
 class FileSizeCommand : public Command {
 public:
     void execute() override {
-        //looking for the file
-
+        string directoryPath = "/";
         //printing the size
+        for (const auto& entry : fs::directory_iterator(directoryPath)) {
+            if (entry.is_regular_file() && entry.path().extension() == ".txt") {
+                std::cout << "File: " << entry.path() << ", Size: " << fs::file_size(entry.path()) << " bytes\n";
+            }
+        }
     }
 };
 
