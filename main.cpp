@@ -1,40 +1,47 @@
 #include "maze.h"
 #include "mazeCompression.h"
 #include "SimpleMazeGenerator.h"
-#include "CLI.h"
 #include "BFS.h"
+#include "Controller.h"
+#include "View.h"
+#include "Model.h"
 
 int main() {
 
 
-	Graph g(6); // Create a graph with 6 vertices
+	//Graph g(6); // Create a graph with 6 vertices
 
-	g.addEdge(0, 1);
-	g.addEdge(0, 2);
-	g.addEdge(1, 3);
-	g.addEdge(2, 4);
-	g.addEdge(3, 4);
-	g.addEdge(3, 5);
-	g.addEdge(4, 5);
+	//g.addEdge(0, 1);
+	//g.addEdge(0, 2);
+	//g.addEdge(1, 3);
+	//g.addEdge(2, 4);
+	//g.addEdge(3, 4);
+	//g.addEdge(3, 5);
+	//g.addEdge(4, 5);
 
-	cout << "Breadth-First Traversal starting from vertex 0: ";
-	BFS bfs;
+	//cout << "Breadth-First Traversal starting from vertex 0: ";
+	//BFS bfs;
 
-	bfs.bfs(g, 2);
-
-	//CLI cli(cin,cout);
-	//cli.start();
+	//bfs.bfs(g, 2);
+	string str = "start";
+	Model* myModel = new Model(str);
+	Controller myController(myModel);
+	Controller* p = &myController;
+	CLI cli(cin, cout, p);
+	cli.start();
 
 	//SimpleMazeGenerator simp(1);
 
 	//simp.measureAlgorithmTime(100, 100);
 
-	MazeCompression compress;
+	//cout << endl;
 
-	string s = "asaf";
+	//MazeCompression compress;
 
-	Maze maze(s, 10, 10);
-	maze.printMaze();
+	//string s = "asaf";
+
+	//Maze maze(s, 10, 10);
+	//maze.printMaze();
 	//Position start = maze.getStartPosition();
 
 	//vector<string> moves = maze.getPossibleMoves(start);
@@ -53,13 +60,15 @@ int main() {
 
 	//cout << "1";
 
-	compress.compress(maze);
+	//compress.compress(maze);
 
-	const string path = "output.txt";
+	//const string path = "output.txt";
 
-	Maze* m = compress.decompress(path);
+	//string name = "asaf";
 
-	m->printMaze();
+	//Maze* m = compress.decompress(path, name);
+
+	//m->printMaze();
 
 	cout << "1";
 

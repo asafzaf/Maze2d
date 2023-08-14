@@ -7,6 +7,7 @@
 #include <ctime>
 #include <algorithm>
 #include <string>
+#include <random>
 
 
 using namespace std;
@@ -138,9 +139,8 @@ private:
     int colSize;
 
 public:
-    Maze(string mazename, int rows, int cols) : rowSize(rows), colSize(cols) {
+    Maze(int rows, int cols) : rowSize(rows), colSize(cols) {
         grid = vector<vector<Cell>>(rows, vector<Cell>(cols, Cell(rows, cols)));
-        name = mazename;
         srand(time(0)); // Seed the random number generator
         generateMaze(0, 0); // Generate maze starting from (0, 0)
         for (int i = 0; i < rows; i++) {
@@ -154,7 +154,7 @@ public:
         goalPosition = &grid[p.first][p.second];
     }
 
-    Maze(string & compressedData, string maze_name) {
+    Maze(string & compressedData) {
         vector<string> parts = splitString(compressedData, '@');
 
         rowSize = stringToInt(parts[0]);
@@ -170,7 +170,7 @@ public:
                 Cell cell(i, j, cellData[j]);
                 grid[i][j] = cell;
             }
-        }   
+        }
 
         //vector<pair<int,int>> stackPairs = splitPairs(parts[3], ';');
 
@@ -180,14 +180,12 @@ public:
 
         backtrackStack = decompressStack(parts[3]);
 
-
-
         Position posStart = decompressPosition(parts[4]);
         Position posGoal = decompressPosition(parts[5]);
 
         startPosition = &grid[posStart.getRow()][posStart.getCol()];
         goalPosition = &grid[posGoal.getRow()][posGoal.getCol()];  
-        name = maze_name;
+        
     }
 
 
@@ -195,7 +193,7 @@ public:
         grid[row][col].setVisited(true);
 
         vector<Direction> directions = { UP, DOWN, LEFT, RIGHT };
-        random_shuffle(directions.begin(), directions.end());
+        shuffle(directions.begin(), directions.end(), std::mt19937(std::random_device()()));
 
         for (Direction dir : directions) {
             int newRow = row;

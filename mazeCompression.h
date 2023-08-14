@@ -6,11 +6,13 @@
 
 class MazeCompression {
 public:
-	int compress(Maze& maze) {
+	int compress(Maze& maze, string filename) {
 
 		string str = maze.getData();
+
+		filename += ".txt";
 		
-			ofstream outputFile("output.txt");
+			ofstream outputFile(filename);
 
 			if (!outputFile.is_open()) {
 				std::cerr << "Unable to open the file for writing." << std::endl;

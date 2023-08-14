@@ -7,26 +7,28 @@ using namespace std;
 class Observer
 {
 public:
-    virtual void update(int value) = 0;
+    virtual void update(string message) = 0;
 };
 
 class Subject
 {
-    int m_value;
+    string m_message;
     vector<Observer*> m_views;
 public:
+    Subject(string m) : m_message(m) {}
+
     void attach(Observer* obs)
     {
         m_views.push_back(obs);
     }
-    void set_val(int value)
+    void set_val(string message)
     {
-        m_value = value;
+        m_message = message;
         notify();
     }
     void notify()
     {
         for (int i = 0; i < m_views.size(); ++i)
-            m_views[i]->update(m_value);
+            m_views[i]->update(m_message);
     }
 };

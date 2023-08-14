@@ -1,6 +1,11 @@
 #pragma once
 #include <iostream>
 #include <filesystem>
+#include <fstream> // implement!!!
+
+#include "Model.h"
+class Controller;
+//class Model;
 
 using namespace std;
 
@@ -19,6 +24,7 @@ class DirCommand : public Command {
 public:
     void execute() override {
         string path_str;
+        
         cout << "Pleasse enter a dir: ";
         cin >> path_str;
         fs::path path(path_str);
@@ -50,7 +56,12 @@ public:
 };
 
 class GenerateMazeCommand : public Command {
+private:
+    Model* myModel;
 public:
+    GenerateMazeCommand(Model* model) : myModel(model) {}
+    //GenerateMazeCommand() : myModel(NULL) {}
+
     void execute() override {
         string name;
         int rows, cols;
@@ -60,8 +71,8 @@ public:
         cin >> rows;
         cout << "Number of cols: ";
         cin >> cols;
-        Maze* temp = new Maze(name, rows, cols);
-        // where to put it???
+        Maze* temp = new Maze(rows, cols);
+        myModel->addMaze(name, temp);
     }
 };
 
