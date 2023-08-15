@@ -120,7 +120,7 @@ private:
 public:
     LoadMazeCommand(Model* model, MazeCompression* compressor) : myModel(model), compress(compressor) {}
     void execute() override {
-        string directoryPath = "/";
+        string directoryPath = ".";
         string filename, mazename;
         cout << "List of files: " << endl;
         for (const auto& entry : fs::directory_iterator(directoryPath)) {
@@ -130,19 +130,20 @@ public:
         }
         cout << "Enter file name (*.txt): ";
         cin >> filename;
-        filename += ".txt";
-;        cout << "Enter new maze name: ";
-        cin >> mazename;
+        filename += ".txt";   
         for (const auto& entry : fs::directory_iterator(directoryPath)) {
-            if (entry.is_regular_file() && entry.path().extension() == ".txt") {
-                std::cout << "File: " << entry.path() << endl;
+            if (entry.is_regular_file() && entry.path().filename() == filename && entry.path().extension() == ".txt") {
+                cout << "Enter new maze name: ";
+                cin >> mazename;
+                Maze* tempmaze = compress->decompress(filename);
+                myModel->addMaze(mazename, tempmaze);
+                return;
             }
         }
-        cout << "Enter new maze name: ";
-        cin >> mazename;
-        //decompress maze and load it with the name
-        Maze* tempmaze = compress->decompress(filename);
-        myModel->addMaze(mazename, tempmaze);
+        cout << "File doesn't exist." << endl;
+        ////decompress maze and load it with the name
+        //Maze* tempmaze = compress->decompress(filename);
+        //myModel->addMaze(mazename, tempmaze);
     }
 };
 
@@ -164,7 +165,7 @@ public:
 class FileSizeCommand : public Command {
 public:
     void execute() override {
-        string directoryPath = "/";
+        string directoryPath = ".";
         //printing the size
         for (const auto& entry : fs::directory_iterator(directoryPath)) {
             if (entry.is_regular_file() && entry.path().extension() == ".txt") {
