@@ -12,10 +12,10 @@ class BFS : public Algorithm {
 
 public:
     
-    void bfs(Graph g, int s) {
-        vector<vector<int>> adj = g.getAdj();
+    void execute(Searchable* g, int s) override {
+        vector<vector<int>> adj = g->getAdj();
         
-        vector<bool> visited(g.getV(), false); // Keep track of visited vertices        
+        vector<bool> visited(g->getV(), false); // Keep track of visited vertices        
         queue<int> q;
 
         visited[s] = true;

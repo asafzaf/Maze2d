@@ -4,6 +4,8 @@
 #include <fstream> // implement!!!
 
 #include "Model.h"
+#include "mazeGenerator.h"
+
 class Controller;
 //class Model;
 
@@ -29,7 +31,7 @@ public:
         cin >> path_str;
         fs::path path(path_str);
 
-        std::vector<std::string> fileAndDirNames;
+        vector<string> fileAndDirNames;
 
         if (fs::exists(path) && fs::is_directory(path)) {
             for (const auto& entry : fs::directory_iterator(path)) {
@@ -48,19 +50,22 @@ public:
 
         // Print the list of file and directory names
         for (const auto& name : fileAndDirNames) {
-            std::cout << name << std::endl;
+            cout << name << std::endl;
         }
 
         return;
     }
 };
 
-class GenerateMazeCommand : public Command {
+class GenerateMazeCommand : public Command , public MazeGenerator {
 private:
     Model* myModel;
 public:
     GenerateMazeCommand(Model* model) : myModel(model) {}
-    //GenerateMazeCommand() : myModel(NULL) {}
+    Maze* generate(int row_size, int col_size) override {
+        Maze* temp = new Maze(row_size, col_size);
+        return temp;
+    }
 
     void execute() override {
         string name;
@@ -71,7 +76,7 @@ public:
         cin >> rows;
         cout << "Number of cols: ";
         cin >> cols;
-        Maze* temp = new Maze(rows, cols);
+        Maze* temp = generate(rows, cols);
         myModel->addMaze(name, temp);
     }
 };
@@ -86,10 +91,15 @@ public:
         string maze_name;
         cout << "Please enter maze name: ";
         cin >> maze_name;
-        cout << endl << "-----------------------" << endl;
-        myModel->printMaze(maze_name);
-        cout << endl << "-----------------------" << endl;
-        cout << "Maze has printed successfully!" << endl;
+        if (myModel->checkMaze(maze_name)) {
+            cout << endl << "-----------------------" << endl;
+            myModel->printMaze(maze_name);
+            cout << endl << "-----------------------" << endl;
+            cout << "Maze has printed successfully!" << endl;
+        }
+        else {
+            cout << "Maze doesn't exist." << endl;
+        }
     }
 };
 
@@ -100,16 +110,21 @@ private:
 public:
     SaveMazeCommand(Model* model, MazeCompression* compressor) : myModel(model), compress(compressor) {}
     void execute() override {
-        string filename, mazename;
+        string filename, maze_name;
         cout << "Enter maze name to save: ";
-        cin >> mazename;
-        cout << "Enter file name: ";
-        cin >> filename;
-        Maze* tempMaze = myModel->getMaze(mazename);
-        //compress maze and save it with the name
-        compress->compress(tempMaze, filename);
-        cout << endl << "-----------------------" << endl;
-        cout << "Maze saved successfully!" << endl;
+        cin >> maze_name;
+        if (myModel->checkMaze(maze_name)) {
+            cout << "Enter file name: ";
+            cin >> filename;
+            Maze* tempMaze = myModel->getMaze(maze_name);
+            //compress maze and save it with the name
+            compress->compress(tempMaze, filename);
+            cout << endl << "-----------------------" << endl;
+            cout << "Maze saved successfully!" << endl;
+        }
+        else {
+            cout << "Maze doesn't exist." << endl;
+        }
     }
 };
 
@@ -141,9 +156,6 @@ public:
             }
         }
         cout << "File doesn't exist." << endl;
-        ////decompress maze and load it with the name
-        //Maze* tempmaze = compress->decompress(filename);
-        //myModel->addMaze(mazename, tempmaze);
     }
 };
 
@@ -172,6 +184,47 @@ public:
                 std::cout << "File: " << entry.path() << ", Size: " << fs::file_size(entry.path()) << " bytes\n";
             }
         }
+    }
+};
+
+class SolveCommand : public Command {
+private:
+    Model* myModel;
+    Adapter* myAdapter;
+public:
+    SolveCommand(Model* model, Adapter* adapter) : myModel(model), myAdapter(adapter) {}
+    void execute() override {
+        string maze_name;
+        cout << "Enter maze name to solve: ";
+        cin >> maze_name;
+        if (myModel->checkMaze(maze_name)) {
+            cout << "Converting to searchable problem..." << endl;
+            Searchable* temp = myAdapter->convertToGraph(myModel->getMaze(maze_name));
+            int choose = 0;
+            while (choose != 1 && choose != 2) {
+                cout << "1- BFS / 2- AStar | choose: ";
+                cin >> choose;
+            }
+            if (choose == 1) {
+                BFS a;
+                a.execute(temp, 1);
+            }
+            else if (choose == 2) {
+                cout << "AStar solving ..." << endl;
+            }
+            else {
+                cout << "Error" << endl;
+            }
+
+        }
+    }
+};
+
+class DisplaySolutionCommand : public Command {
+public:
+    void execute() override {
+        cout << "Display Solution Command" << endl;
+
     }
 };
 

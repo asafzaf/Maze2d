@@ -25,7 +25,7 @@ public:
     void list_commands() {
         //map<string, unique_ptr<Command>>::iterator it;
         map<string, Command*> list = controller->getCommands();
-        std::map<std::string, Command*>::iterator it;
+        map<string, Command*>::iterator it;
         output << "Available commands:" << endl;
         for(it = list.begin(); it != list.end(); ++it){
         //for (const pair<string, unique_ptr<Command>> pair : c.commands) {

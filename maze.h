@@ -188,6 +188,10 @@ public:
         
     }
 
+    ~Maze() {
+        free(startPosition);
+        free(goalPosition);
+    }
 
     void generateMaze(int row, int col) {
         grid[row][col].setVisited(true);
@@ -345,34 +349,6 @@ public:
         return to_string(row) + ',' + to_string(col);
     }
 
-    //void setData(const string& compressedData) {
-    //    vector<string> parts = splitString(compressedData, '@');
-    //    
-    //    
-    //    vector<string> rows = splitString(parts[0], '\n');
-
-    //    // Parse rows and reconstruct grid
-    //    for (size_t i = 0; i < rows.size(); ++i) {
-    //        vector<string> cellData = splitString(rows[i], ',');
-    //        for (size_t j = 0; j < cellData.size(); ++j) {
-    //            Cell cell(i,j,cellData[j]);
-    //            grid[i][j] = cell;
-    //        }
-    //    }
-    //   
-    //    
-    //    vector<string> other = splitString(parts[1], '\n');
-
-    //    backtrackStack = decompressStack(rows[rows.size() - 3]);
-    //   
-    //    Position posStart = decompressPosition(rows[rows.size() - 2]);
-    //    Position posGoal = decompressPosition(rows[rows.size() - 2]);
-
-    //    startPosition = &grid[posStart.getRow()][posStart.getCol()];
-    //    goalPosition = &grid[posGoal.getRow()][posGoal.getCol()];
-    //}
-
-
     stack<pair<int, int>> decompressStack(const string& compressedStackData) {
         stack<pair<int, int>> stk;
 
@@ -422,5 +398,10 @@ public:
         }
         return result;
     }
+
+    int getRowSize() { return rowSize; }
+    int getColSize() { return colSize; }
+    vector<vector<Cell>> getGrid() { return grid; }
+
 
 };

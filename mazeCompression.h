@@ -28,6 +28,7 @@ public:
 			return 0;
 		
 	}
+	
 	Maze* decompress(const string& compressedFilePath) {
 
 		std::ifstream compressedFile(compressedFilePath);
@@ -46,7 +47,5 @@ public:
 		Maze* n = new Maze(res);
 		return n;
 	}
-
-
 
 };

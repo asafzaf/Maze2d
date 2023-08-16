@@ -13,7 +13,7 @@ class Controller : public Observer {
 private:
     Model* mymodel;
     MazeCompression* compress;
-    //friend class CLI;
+    Adapter* adapter;
     friend class Command;
 
     map<string, Command*> commands;
@@ -23,6 +23,7 @@ public:
     Controller(Model* model) : Observer() {
         mymodel = model;
         compress = new MazeCompression();
+        adapter = new Adapter();
         DirCommand* dir = new DirCommand();
         GenerateMazeCommand* generatemaze = new GenerateMazeCommand(model);
         DisplayCommand* display = new DisplayCommand(model);
@@ -30,8 +31,8 @@ public:
         LoadMazeCommand* loadmaze = new LoadMazeCommand(model, compress);
         MazeSizeCommand* mazesize = new MazeSizeCommand(model);
         FileSizeCommand* filesize = new FileSizeCommand();
-
-
+        SolveCommand* solve = new SolveCommand(model, adapter);
+        DisplaySolutionCommand* displaysolution = new DisplaySolutionCommand();
         ExitCommand* exit = new ExitCommand();
 
         commands["dir"] = (dir);
@@ -41,26 +42,21 @@ public:
         commands["load maze"] = (loadmaze);
         commands["maze size"] = (mazesize);
         commands["file size"] = (filesize);
-
-
+        commands["solve"] = (solve);
+        commands["display solution"] = (displaysolution);
         commands["exit"] = (exit);
 
-        //register_command("dir", make_unique<DirCommand>());
-        //register_command("generate maze", make_unique<GenerateMazeCommand>());
-        //register_command("display", make_unique<DisplayCommand>());
-        //register_command("save maze", make_unique<SaveMazeCommand>());
-        //register_command("load maze", make_unique<LoadMazeCommand>());
-        //register_command("maze size", make_unique<MazeSizeCommand>());
-        //register_command("file size", make_unique<FileSizeCommand>());
-        ////register_command("solve", make_unique<Command>());
-        //register_command("display solution", make_unique<GenerateMazeCommand>());
-        //register_command("exit", make_unique<ExitCommand>());
     }
 
-    /*void register_command(const string& command_name, unique_ptr<Command> command) {
-        commands[command_name] = move(command);
-    }*/
-    /* virtual */void update(string message) override {}
+    ~Controller() {
+        free(compress);
+        for (const auto& ptr : commands) {
+            free(ptr.second);
+        }
+        commands.clear();
+    }
+
+    void update(string message) override {}
 
     map<string , Command*> getCommands() { return commands; }
 

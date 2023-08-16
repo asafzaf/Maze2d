@@ -1,5 +1,5 @@
 #pragma once
 
 class Algorithm {
-	virtual void func() {};
+	virtual void execute(Searchable* g, int s) = 0;
 };

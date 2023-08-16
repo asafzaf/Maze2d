@@ -3,24 +3,34 @@
 
 #include "Observer.h"
 #include "maze.h"
-#
+#include "Solution.h"
 
 
 class Model : public Subject {
 private:
     friend class Command;
     map<string, Maze*> mazes;
+    map<Maze*, Solution> solutions;
 public:
     Model(string m) : Subject(m) {}
+    
+    ~Model() {
+        for (const auto& ptr : mazes) {
+            free(ptr.second);
+        }
+        mazes.clear();
+    }
 
     void addMaze(string name, Maze* maze) {
         mazes[name] = maze;
         cout << "Maze '" << name << "' added successfully" << endl;
     }
+    
     void removeMaze(string name) {
         mazes.erase(name);
         cout << "Maze '" << name << "' removed successfully" << endl;
     }
+    
     void printMaze(string name) {
         cout << "Printing Maze: " << name << endl;
         mazes[name]->printMaze();
@@ -50,5 +60,18 @@ public:
 
     Maze* getMaze(string name) {
         return mazes[name];
+    }
+
+    bool checkSolution(Maze* maze) {
+        map<Maze*, Solution>::iterator it;
+        it = solutions.find(maze);
+        if (it != solutions.end()) {
+            return true;
+        }
+        else return false;
+    }
+    
+    void addSolution(Maze* maze, Solution solution) {
+        solutions[maze] = solution;
     }
 };
