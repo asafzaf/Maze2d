@@ -32,7 +32,7 @@ public:
         MazeSizeCommand* mazesize = new MazeSizeCommand(model);
         FileSizeCommand* filesize = new FileSizeCommand();
         SolveCommand* solve = new SolveCommand(model, adapter);
-        DisplaySolutionCommand* displaysolution = new DisplaySolutionCommand();
+        DisplaySolutionCommand* displaysolution = new DisplaySolutionCommand(model);
         ExitCommand* exit = new ExitCommand();
 
         commands["dir"] = (dir);

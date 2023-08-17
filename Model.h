@@ -74,4 +74,14 @@ public:
     void addSolution(Maze* maze, Solution solution) {
         solutions[maze] = solution;
     }
+
+    string getSolution(Maze* maze) {
+        map<Maze*, Solution>::iterator it;
+        it = solutions.find(maze);
+        if (it != solutions.end()) {
+            Solution temp(it->second);
+            return temp.getSolute();
+        }
+        else return "Error";
+    }
 };

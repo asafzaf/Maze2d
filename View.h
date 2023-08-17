@@ -11,5 +11,7 @@ public:
         model->attach(this);
         cli = &c;
     }
-    /* virtual */void update(string message) override {}
+    /* virtual */void update(string message) override {
+        cout << message << endl;
+    }
 };

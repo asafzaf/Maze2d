@@ -5,6 +5,7 @@
 
 #include "Model.h"
 #include "mazeGenerator.h"
+#include "Solution.h"
 
 class Controller;
 //class Model;
@@ -198,16 +199,21 @@ public:
         cout << "Enter maze name to solve: ";
         cin >> maze_name;
         if (myModel->checkMaze(maze_name)) {
+            if (myModel->checkSolution(myModel->getMaze(maze_name))) {
+                cout << "This maze already have a solution!" << endl;
+                return;
+            }
             cout << "Converting to searchable problem..." << endl;
             Searchable* temp = myAdapter->convertToGraph(myModel->getMaze(maze_name));
             int choose = 0;
             while (choose != 1 && choose != 2) {
-                cout << "1- BFS / 2- AStar | choose: ";
+                cout << "1- BFS / 2- AStar || choose: ";
                 cin >> choose;
             }
             if (choose == 1) {
                 BFS a;
-                a.execute(temp, 1);
+                Solution solution(a.execute(temp, 1));
+                myModel->addSolution(myModel->getMaze(maze_name), solution);
             }
             else if (choose == 2) {
                 cout << "AStar solving ..." << endl;
@@ -215,16 +221,30 @@ public:
             else {
                 cout << "Error" << endl;
             }
-
+            cout << endl << "-----------------------" << endl;
+            cout << "Maze solved successfully!" << endl;
+        }
+        else {
+            cout << "No such a maze with this name." << endl;
         }
     }
 };
 
 class DisplaySolutionCommand : public Command {
+    Model* myModel;
 public:
+    DisplaySolutionCommand(Model* model) : myModel(model) {}
     void execute() override {
-        cout << "Display Solution Command" << endl;
-
+        string maze_name;
+        cout << "Please enter maze name: ";
+        cin >> maze_name;
+        if (myModel->checkSolution(myModel->getMaze(maze_name))) {
+            string s = myModel->getSolution(myModel->getMaze(maze_name));
+            cout << s << endl;
+        }
+        else {
+            cout << "No such a maze / No solution." << endl;
+        }
     }
 };
 
